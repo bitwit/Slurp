@@ -1,0 +1,8 @@
+.DS_Store
+/.build
+/Packages
+**/xcuserdata/**
+build
+
+example.xcarchive
+example.ipa
