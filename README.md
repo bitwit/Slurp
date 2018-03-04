@@ -2,7 +2,7 @@
 
 [![Build Status](https://www.bitrise.io/app/000a61c8091db1a1/status.svg?token=HJjORiUavGh7lyVYVx794g)](https://www.bitrise.io/app/000a61c8091db1a1)
 [![Swift Package Manager Compatible](https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
-[![Version 0.0.1](https://img.shields.io/github/tag/bitwit/slurp.svg)](https://swift.org/package-manager)
+[![Releases](https://img.shields.io/github/tag/bitwit/slurp.svg)](https://github.com/bitwit/Slurp/releases)
 
 
 A Swift task runner and file watcher with an interface inspired by Gulp.js. Run it from your command line or inside of Xcode
