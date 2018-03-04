@@ -1,5 +1,11 @@
-# Slurp
-A Swift task runner and file watcher with an interface inspired by Gulp.js.
+![Slurp Logo](https://raw.githubusercontent.com/bitwit/Slurp/master/slurp-logo.jpg)
+
+[![Build Status](https://www.bitrise.io/app/000a61c8091db1a1/status.svg?token=HJjORiUavGh7lyVYVx794g)](https://www.bitrise.io/app/000a61c8091db1a1)
+[![Swift Package Manager Compatible](https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
+[![Version 0.0.1](https://img.shields.io/github/tag/bitwit/slurp.svg)](https://swift.org/package-manager)
+
+
+A Swift task runner and file watcher with an interface inspired by Gulp.js. Run it from your command line or inside of Xcode
 
 ## Contents
 - [Intended Uses](#intended-uses)
@@ -14,7 +20,7 @@ A Swift task runner and file watcher with an interface inspired by Gulp.js.
 ## Intended Uses
 
 ### For automating workflows
-Build your Slurp Task module as an executable. Run it from your CI server, the command line or XCode. For example, this code builds and deploys an iOS app to the iTunes App Store:
+Build your Slurp Task module as an executable. Run it from your CI server, the command line or Xcode. For example, this code builds and deploys an iOS app to the iTunes App Store:
 
 ```swift
 import Slurp
@@ -38,7 +44,7 @@ try! slurp.runAndExit(taskName: "buildAndDeploy")
 ```
 
 ### Monitoring the filesystem for changes, then running tasks
-This is useful for development workflows that involve files generated from 3rd party tools (e.g. graphics editors). If you are looking for ways to develop in Swift without using XCode, this may be useful for running tests and linters automatically also. 
+This is useful for development workflows that involve files generated from 3rd party tools (e.g. graphics editors). If you are looking for ways to develop in Swift without using Xcode, this may be useful for running tests and linters automatically also. 
 
 ```swift
 import Slurp
@@ -56,7 +62,7 @@ RunLoop.main.run() // Keep the task running indefinitely
 ```
 
 ## Installation
-Add Slurp to your `package.swift` and create a new executable `Tasks` module with Slurp as a dependency. You may also need `SlurpXCTools` for XCode related Tasks.
+Add Slurp to your `package.swift` and create a new executable `Tasks` module with Slurp as a dependency. You may also need `SlurpXCTools` for Xcode related Tasks.
 A basic `package.swift` might look like this:
 
 ```swift
@@ -113,7 +119,7 @@ This git repo contains an xcworkspace and example app that mimic this suggested 
 
 ## Currently Available Tasks
 - Shell
-- XCodebuild (`xcodebuild`)
+- Xcodebuild (`xcodebuild`)
 - Version (`agvtool`)
 - ApplicationLoader (`altool`)
 - Cocoapods (`pod`)
@@ -184,7 +190,7 @@ Some future desires/plans. Requests and contributions very welcome!
 - Slurp CLI
 - Dry run flag
 - Prettier output
-- Improve XCode integration flow
+- Improve Xcode integration flow
 - Make more tasks. Personal wish list:
 	- Swiftlint task
 	- Slack API task
