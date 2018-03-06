@@ -1,6 +1,6 @@
 ![Slurp Logo](https://raw.githubusercontent.com/bitwit/Slurp/master/slurp-logo.jpg)
 
-[![Build Status](https://www.bitrise.io/app/000a61c8091db1a1/status.svg?token=HJjORiUavGh7lyVYVx794g)](https://www.bitrise.io/app/000a61c8091db1a1)
+[![Build Status](https://www.bitrise.io/app/000a61c8091db1a1/status.svg?token=HJjORiUavGh7lyVYVx794g&branch=master)](https://www.bitrise.io/app/000a61c8091db1a1)
 [![Swift Package Manager Compatible](https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
 [![Releases](https://img.shields.io/github/tag/bitwit/slurp.svg)](https://github.com/bitwit/Slurp/releases)
 
