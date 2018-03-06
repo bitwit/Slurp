@@ -20,6 +20,7 @@ open class XcodeBuild: SlurpTask {
         var workspace: String?
         var scheme: String?
         var destination: String?
+        
         var sdk: SDK = .ios
         
         var testDestination: String = "platform=iOS Simulator,name=iPhone 6s Plus,OS=latest"
@@ -92,7 +93,7 @@ open class XcodeBuild: SlurpTask {
             arguments += conf.exportOptionsPlist.map({ ["-exportOptionsPlist", $0] }) ?? []
         }
         
-        arguments += ["-sdk", conf.sdk.rawValue]
+//        arguments += ["-sdk", conf.sdk.rawValue]
         
         return Shell.createObservable(arguments: arguments).asVoid()
     }

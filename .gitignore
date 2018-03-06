@@ -1,8 +1,11 @@
 .DS_Store
-/.build
-/Packages
-**/xcuserdata/**
+.build
 build
+/Packages
+/Scripts
+**/xcuserdata/**
+
+Slurp
 
 example.xcarchive
 example.ipa

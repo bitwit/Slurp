@@ -5,7 +5,7 @@ import PathKit
 
 public class ApplicationLoader: Shell {
     
-    static var alToolPath: String = "/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Support/altool"
+    static var alToolPath: String = "/Applications/Xcode.app/Contents/Applications/Application\\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Support/altool"
     
     public enum Action: String {
         case uploadApp = "--upload-app"

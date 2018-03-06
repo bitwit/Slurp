@@ -31,7 +31,7 @@ class ShellTaskSpec: QuickSpec {
         let process = MockShellProcess.lastInitializedProcess
 
         expect(process).notTo(beNil())
-        expect(process?.arguments) == ["echo", "hello world"]
+        expect(process?.arguments) == ["-c", "echo", "hello world"]
       }
 
       it("should call onNext on the observer after terminationBlock is called") {

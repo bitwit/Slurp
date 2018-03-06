@@ -1,5 +1,7 @@
 import Foundation
 import RxSwift
+import ShellOut
+import PathKit
 
 public protocol SlurpShellProcess: class {
 
@@ -59,11 +61,11 @@ open class Shell: SlurpTask {
             
             print("$", arguments.joined(separator: " "))
             let process = Slurp.processType.init()
-            process.launchPath = "/usr/bin/env"
-            process.arguments = arguments
+            process.launchPath = "/bin/bash"
+            process.arguments = ["-c"] + arguments
             
-            if let dir = Slurp.currentWorkingDirectory {
-                process.currentWorkingDirectory = dir
+            if let cwd = Slurp.currentWorkingDirectory {
+                process.currentWorkingDirectory = Path(cwd).absolute().string
             }
 
             let pipe = Pipe()
@@ -96,12 +98,26 @@ open class Shell: SlurpTask {
         })
     }
 
+    public init(_ command: String) {
+        self.observable = Shell.createObservable(arguments: [command])
+    }
+    
     public init(arguments: [String]) {
         self.observable = Shell.createObservable(arguments: arguments)
     }
 
     open func onPipe<U>(from input: U) -> Observable<(Int32, String?)> {
         return observable
+    }
+    
+    //Shell out support
+    
+    public static func createObservable(shellOutCommand: ShellOutCommand) -> Observable<(Int32, String?)> {
+        return createObservable(arguments: [shellOutCommand.string])
+    }
+    
+    public init(_ shellOutCommand: ShellOutCommand) {
+        self.observable = Shell.createObservable(shellOutCommand: shellOutCommand)
     }
 
 }
