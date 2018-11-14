@@ -103,7 +103,7 @@ public class FolderMonitor {
     
     func onChange(events: [(Path, FSEvent)]) {
         
-        let validEvents = events.filter { FolderMonitor.filename($0.0.string, matchesAnyGlob: globs) }
+        let validEvents = events.filter { FolderMonitor.filename(Path($0.0.string).absolute().string, matchesAnyGlob: globs) }
         if false == validEvents.isEmpty {
             print(validEvents)
             handler()

@@ -5,7 +5,8 @@
 [![Releases](https://img.shields.io/github/tag/bitwit/slurp.svg)](https://github.com/bitwit/Slurp/releases)
 
 
-A Swift task runner and file watcher with an interface inspired by Gulp.js. Run it from your command line or inside of Xcode
+A Swift task runner and file watcher that you can run from your Xcode Workspace or the ommand line. Comes with everything you need to build and deploy an iOS app just by running an XCode Scheme. 
+Inspired by Gulp.js. 
 
 ## Contents
 - [Intended Uses](#intended-uses)
@@ -62,27 +63,20 @@ RunLoop.main.run() // Keep the task running indefinitely
 ```
 
 ## Installation
-Add Slurp to your `package.swift` and create a new executable `Tasks` module with Slurp as a dependency. You may also need `SlurpXCTools` for Xcode related Tasks.
-A basic `package.swift` might look like this:
 
-```swift
-import PackageDescription
+1. `$ git clone git@github.com:bitwit/Slurp.git`
+2. `$ cd Slurp && make`
+3. The Slurp CLI will now be installed and the repo copied to `~/.slurp/clone` for local reference in your projects
 
-let package = Package(
-    name: "MyApp",
-    products: [],
-    dependencies: [
-      .package(url: "https://github.com/bitwit/Slurp.git", .exact(.init(0, 0, 1))),
-    ],
-    targets: [
-        .target(
-            name: "Tasks",
-            dependencies: ["Slurp", "SlurpXCTools"])
-    ]
-)
-```
+## Adding Slurp to your project
+In the root of the project:
+1. `$ slurp init`. This will create a new SlurpTasks package in `<project root>/Slurp`.
+2. `$ slurp edit` will open the the SlurpTasks Xcode project, but you can also add this project to your regular Workspace.
+3. `$ slurp` will run your SlurpTasks executable
 
-A basic `Sources/Tasks/main.swift` file would look like:
+## Your first slurp task
+
+A basic `Sources/SlurpTasks/main.swift` file would look like:
 
 ```swift
 import Slurp
@@ -94,25 +88,29 @@ slurp.register("sayHello", Shell(arguments: ["echo", "hello world"]))
 try! slurp.runAndExit(taskName: "sayHello")
 ```
 
-From the command line you can now execute: 
-
-```sh
-$ swift run Tasks
-```
-
 ### Developing and Running in Xcode
-Start by setting up a workspace. Then run
 
- ```sh
- $ swift package generate-xcodeproj --output myTasks.xcodeproj
- ```
- > **Note**: By default the xcodeproj file name is your Package name i.e. "MyApp.xcodeproj". Keep this generated xcodeproj separate from your main XCode target app so that can can rerun this command if necessary
- 
- Include this xcodeproj in your workspace. There should now be a scheme you can run to execute your task. You may need set your current working directory in order for this to run processes from the right folder.
- 
+When you run your Tasks from XCode it will execute from the build folder. To get around this there are several ways to set the current working directly correctly:
+
+1. Set it at the top of your main.swift
+
 ```swift
 Slurp.currentWorkingDirectory = "/path/to/app"
 ```
+2. Pass it as an environment variable
+
+`$ SLURP_CWD=/path/to/app slurp`
+
+3. Change it at any point in the task flow
+```swift
+slurp
+    .register("example") {
+        return slurp
+            |> CWD("~/Development/personal/Slurp")
+            |> ...
+    }
+```
+
 > **Note**: You can pass this as an environment variable too through `SLURP_CWD`. This can be set in your task scheme's configuration
 
 This git repo contains an xcworkspace and example app that mimic this suggested structure.

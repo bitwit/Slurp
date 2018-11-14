@@ -14,48 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::SlurpXCTools"
-               BuildableName = "SlurpXCTools.framework"
-               BlueprintName = "SlurpXCTools"
-               ReferencedContainer = "container:Slurp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::Slurp"
-               BuildableName = "Slurp.framework"
-               BlueprintName = "Slurp"
-               ReferencedContainer = "container:Slurp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::SlurpCLI"
-               BuildableName = "SlurpCLI"
-               BlueprintName = "SlurpCLI"
-               ReferencedContainer = "container:Slurp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "Slurp::ExampleSlurpTasks"
                BuildableName = "ExampleSlurpTasks"
                BlueprintName = "ExampleSlurpTasks"
@@ -94,15 +52,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Slurp::SlurpXCTools"
-            BuildableName = "SlurpXCTools.framework"
-            BlueprintName = "SlurpXCTools"
+            BlueprintIdentifier = "Slurp::ExampleSlurpTasks"
+            BuildableName = "ExampleSlurpTasks"
+            BlueprintName = "ExampleSlurpTasks"
             ReferencedContainer = "container:Slurp.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

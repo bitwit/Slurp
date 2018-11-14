@@ -1,5 +1,6 @@
 import Foundation
 import RxSwift
+import ShellOut
 
 public enum SlurpTaskError: Error {
     case unexpectedInput
@@ -7,17 +8,18 @@ public enum SlurpTaskError: Error {
     case asyncTaskYieldedNoResultOrError
     case shellProcessExitedWithNonZero(Int32, String?)
     case taskDeallocated
+    case unspecified
 }
 
 public protocol SlurpTask {
-    
+
     associatedtype OutputType
-    
+
     func onPipe<U>(from input: U) -> Observable<OutputType>
 }
 
 public class RegisteredTask {
-    
+
     let name: String
     var dependencies: [String]
     let observable: Observable<Void>
@@ -36,8 +38,8 @@ open class BasicTask<T>: SlurpTask {
     public init(observable: Observable<T>) {
         self.observable = observable
     }
-    
-    public convenience init(asyncTask: @escaping ( (Error?, T?) -> Void ) -> Void) {
+
+    public init(asyncTask: @escaping ( (Error?, T?) -> Void ) -> Void) {
         let observable = Observable<T>.create { (observer) -> Disposable in
             asyncTask {
                 err, value in
@@ -52,10 +54,19 @@ open class BasicTask<T>: SlurpTask {
             }
             return Disposables.create()
         }
-        self.init(observable: observable)
+        self.observable = observable
     }
-    
+
     public func onPipe<U>(from input: U) -> Observable<T> {
         return observable
+    }
+}
+
+public class CWD: BasicTask<Void> {
+    public init(_ newDir: String) {
+        Slurp.currentWorkingDirectory = newDir
+        super.init { callback in
+            callback(nil, ())
+        }
     }
 }
