@@ -5,7 +5,7 @@
 [![Releases](https://img.shields.io/github/tag/bitwit/slurp.svg)](https://github.com/bitwit/Slurp/releases)
 
 
-A Swift task runner and file watcher that you can run from your Xcode Workspace or the ommand line. Comes with everything you need to build and deploy an iOS app just by running an XCode Scheme. 
+A Swift task runner and file watcher that you can run from your Xcode Workspace or the Command line. Comes with everything you need to build and deploy an iOS app just by running an XCode Scheme. 
 Inspired by Gulp.js. 
 
 ## Contents
