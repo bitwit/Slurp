@@ -59,10 +59,12 @@ open class Shell: SlurpTask {
     public static func createObservable(arguments: [String]) -> Observable<(Int32, String?)> {
         return Observable<(Int32, String?)>.create({ (observer) -> Disposable in
             
-            print("$", arguments.joined(separator: " "))
+            let command = arguments.joined(separator: " ")
+            print("$", command)
+            
             let process = Slurp.processType.init()
             process.launchPath = "/bin/bash"
-            process.arguments = ["-c"] + arguments
+            process.arguments = ["-c", command]
             
             if let cwd = Slurp.currentWorkingDirectory {
                 process.currentWorkingDirectory = Path(cwd).absolute().string

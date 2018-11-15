@@ -33,6 +33,7 @@ extension ObservableType {
     
     public func pipe<S: SlurpTask>(to: S) -> Observable<S.OutputType> {
         return flatMap({ (element) -> Observable<S.OutputType> in
+            print("\n----- Running \(to.name) \n")
             return to.onPipe(from: element)
         })
     }

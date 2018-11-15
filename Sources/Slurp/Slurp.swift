@@ -51,6 +51,7 @@ public class Slurp {
     }
 
     public func startWith<S: SlurpTask>(_ task: S) -> Observable<S.OutputType> {
+        print("\n----- Running \(task.name) \n")
         return task.onPipe(from: ())
     }
 

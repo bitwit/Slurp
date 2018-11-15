@@ -15,7 +15,16 @@ public protocol SlurpTask {
 
     associatedtype OutputType
 
+    var name: String { get }
+    
     func onPipe<U>(from input: U) -> Observable<OutputType>
+}
+
+extension SlurpTask {
+    
+    public var name: String {
+        return String(describing: self)
+    }
 }
 
 public class RegisteredTask {
