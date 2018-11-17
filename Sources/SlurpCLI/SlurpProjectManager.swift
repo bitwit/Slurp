@@ -79,7 +79,7 @@ public class SlurpProjectManager {
     private func generateXcodeProject() throws {
         try Slurp()
             .register("RunTask") {
-                return Shell("cd Slurp && package generate-xcodeproj").observable
+                return Shell("cd Slurp && swift package generate-xcodeproj").observable
             }
             .runAndExit(taskName: "RunTask")
     }
