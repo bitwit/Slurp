@@ -55,13 +55,11 @@ public class ApplicationLoader: Shell {
         }
         
         super.init(arguments: arguments)
-        
-        let shellObs = self.observable
-        self.observable = Observable.just(())
-            .flatMap({ () -> Observable<(Int32, String?)> in
-                print("\n--- Uploading App, this may take several minutes\n")
-                return shellObs
-            })
+    }
+    
+    public override func onPipe<U>(from input: U) -> Observable<String> {
+        print("\n--- Uploading App, this may take several minutes\n")
+        return super.onPipe(from: input)
     }
     
 }

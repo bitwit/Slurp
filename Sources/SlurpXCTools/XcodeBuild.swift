@@ -73,7 +73,7 @@ open class XcodeBuild: SlurpTask {
         var arguments = ["xcodebuild"]
         
         guard let conf = config else {
-            return Shell.createObservable(arguments: arguments).asVoid()
+            return Shell(arguments: arguments).observable.asVoid()
         }
         
         switch action {
@@ -95,6 +95,6 @@ open class XcodeBuild: SlurpTask {
         
 //        arguments += ["-sdk", conf.sdk.rawValue]
         
-        return Shell.createObservable(arguments: arguments).asVoid()
+        return Shell(arguments: arguments).observable.asVoid()
     }
 }

@@ -60,26 +60,26 @@ public class SlurpProjectManager {
     }
     
     func run() throws {
-        try Slurp()
-        .register("RunTask") {
-            return Shell("cd Slurp && swift run").observable
+        let slurp = Slurp()
+        try slurp.register("RunTask") {
+            return slurp |> Shell("cd Slurp && swift run")
         }
         .runAndExit(taskName: "RunTask")
     }
     
     func openInXcode() throws {
         try generateXcodeProject()
-        try Slurp()
-            .register("Edit") {
-                return Shell("cd Slurp && open SlurpTasks.xcodeproj").observable
+        let slurp = Slurp()
+        try slurp.register("Edit") {
+                return slurp |> Shell("cd Slurp && open SlurpTasks.xcodeproj")
             }
             .runAndExit(taskName: "Edit")
     }
     
     private func generateXcodeProject() throws {
-        try Slurp()
-            .register("RunTask") {
-                return Shell("cd Slurp && swift package generate-xcodeproj").observable
+        let slurp = Slurp()
+        try slurp.register("RunTask") {
+                return slurp |> Shell("cd Slurp && swift package generate-xcodeproj")
             }
             .runAndExit(taskName: "RunTask")
     }

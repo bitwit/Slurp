@@ -14,9 +14,9 @@ public func |> <S: SlurpTask>(lhs: Slurp, rhs: S) -> Observable<S.OutputType> {
 
 // String piping
 public func |> <T> (lhs: Observable<T>, rhs: String) -> Observable<Shell.OutputType> {
-    return lhs.pipe(to: Shell(rhs))
+    return lhs |> Shell(rhs)
 }
 
 public func |> (lhs: Slurp, rhs: String) -> Observable<Shell.OutputType> {
-    return lhs.startWith(Shell(rhs))
+    return lhs |> Shell(rhs)
 }

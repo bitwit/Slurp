@@ -54,10 +54,28 @@ extension Process: SlurpShellProcess {
 
 open class Shell: SlurpTask {
 
-    public var observable: Observable<(Int32, String?)> = Observable.empty()
+    public typealias OutputType = String
     
-    public static func createObservable(arguments: [String]) -> Observable<(Int32, String?)> {
-        return Observable<(Int32, String?)>.create({ (observer) -> Disposable in
+    open var arguments: [String] = []
+    
+    open var observable: Observable<String> {
+        return Shell.createObservable(arguments: arguments)
+    }
+    
+    public init(_ command: String) {
+        self.arguments = [command]
+    }
+    
+    public init(arguments: [String]) {
+        self.arguments = arguments
+    }
+    
+    open func onPipe<U>(from input: U) -> Observable<String> {
+        return Shell.createObservable(arguments: arguments)
+    }
+    
+    private static func createObservable(arguments: [String]) -> Observable<String> {
+        return Observable<String>.create({ (observer) -> Disposable in
             
             let command = arguments.joined(separator: " ")
             print("$", command)
@@ -86,9 +104,8 @@ open class Shell: SlurpTask {
             process.terminationBlock = { process in
                 pipe.fileHandleForReading.closeFile()
                 let output = String(data: allData, encoding: .utf8)
-                
                 if process.terminationStatus == 0 {
-                    observer.onNext( (process.terminationStatus, output) )
+                    observer.onNext(output ?? "")
                     observer.onCompleted()
                 } else {
                     observer.onError(SlurpTaskError.shellProcessExitedWithNonZero(process.terminationStatus, output))
@@ -100,26 +117,10 @@ open class Shell: SlurpTask {
         })
     }
 
-    public init(_ command: String) {
-        self.observable = Shell.createObservable(arguments: [command])
-    }
-    
-    public init(arguments: [String]) {
-        self.observable = Shell.createObservable(arguments: arguments)
-    }
-
-    open func onPipe<U>(from input: U) -> Observable<(Int32, String?)> {
-        return observable
-    }
-    
     //Shell out support
     
-    public static func createObservable(shellOutCommand: ShellOutCommand) -> Observable<(Int32, String?)> {
-        return createObservable(arguments: [shellOutCommand.string])
-    }
-    
-    public init(_ shellOutCommand: ShellOutCommand) {
-        self.observable = Shell.createObservable(shellOutCommand: shellOutCommand)
+    public convenience init(_ shellOutCommand: ShellOutCommand) {
+        self.init(arguments: [shellOutCommand.string])
     }
 
 }
