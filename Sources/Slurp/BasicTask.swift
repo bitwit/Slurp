@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import ShellOut
+import PathKit
 
 public enum SlurpTaskError: Error {
     case unexpectedInput
@@ -74,6 +75,7 @@ open class BasicTask<T>: SlurpTask {
 public class CWD: BasicTask<Void> {
     public init(_ newDir: String) {
         Slurp.currentWorkingDirectory = newDir
+        Path.current = Path(newDir)
         super.init { callback in
             callback(nil, ())
         }
