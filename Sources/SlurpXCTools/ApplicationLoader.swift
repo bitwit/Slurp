@@ -38,6 +38,11 @@ public class ApplicationLoader: Shell {
         }
     }
     
+    public override var runMessage: String? { return """
+        \n--- Uploading App, this may take several minutes\n
+        """
+    }
+    
     public init(_ action: Action, config: Config) {
         
         let file = Path(config.file).absolute().string
@@ -55,11 +60,6 @@ public class ApplicationLoader: Shell {
         }
         
         super.init(arguments: arguments)
-    }
-    
-    public override func onPipe<U>(from input: U) -> Observable<String> {
-        print("\n--- Uploading App, this may take several minutes\n")
-        return super.onPipe(from: input)
     }
     
 }

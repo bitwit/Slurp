@@ -56,10 +56,12 @@ open class Shell: SlurpTask {
 
     public typealias OutputType = String
     
+    open var runMessage: String? { return "" }
+    
     open var arguments: [String] = []
     
     open var observable: Observable<String> {
-        return Shell.createObservable(arguments: arguments)
+        return createObservable(arguments: arguments)
     }
     
     public init(_ command: String) {
@@ -71,11 +73,17 @@ open class Shell: SlurpTask {
     }
     
     open func onPipe<U>(from input: U) -> Observable<String> {
-        return Shell.createObservable(arguments: arguments)
+        return createObservable(arguments: arguments)
     }
     
-    private static func createObservable(arguments: [String]) -> Observable<String> {
+    private func createObservable(arguments: [String]) -> Observable<String> {
+        let createMessage = self.runMessage
         return Observable<String>.create({ (observer) -> Disposable in
+            
+            if let message = createMessage
+                , !message.isEmpty {
+                print(message)
+            }
             
             let command = arguments.joined(separator: " ")
             print("$", command)

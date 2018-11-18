@@ -17,6 +17,7 @@ public protocol SlurpTask {
     associatedtype OutputType
 
     var name: String { get }
+    var runMessage: String? { get }
     
     func onPipe<U>(from input: U) -> Observable<OutputType>
 }
@@ -44,6 +45,7 @@ public class RegisteredTask {
 open class BasicTask<T>: SlurpTask {
 
     public let observable: Observable<T>
+    public var runMessage: String?
 
     public init(observable: Observable<T>) {
         self.observable = observable
@@ -74,9 +76,10 @@ open class BasicTask<T>: SlurpTask {
 
 public class CWD: BasicTask<Void> {
     public init(_ newDir: String) {
-        Slurp.currentWorkingDirectory = newDir
-        Path.current = Path(newDir)
         super.init { callback in
+            Slurp.currentWorkingDirectory = newDir
+            Path.current = Path(newDir)
+            print("Current Working Directory set to \(newDir)")
             callback(nil, ())
         }
     }

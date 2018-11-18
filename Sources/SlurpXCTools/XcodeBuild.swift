@@ -53,6 +53,7 @@ open class XcodeBuild: SlurpTask {
     }
     
     var observable: Observable<Void>
+    public var runMessage: String?
 
     public init(_ actions: [Action], config: Config? = nil) {
         

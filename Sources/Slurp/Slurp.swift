@@ -39,19 +39,18 @@ public class Slurp {
     }
 
     @discardableResult
-    public func register<T>(_ name: String, _ dependencies: [String], _ taskCreator: () -> Observable<T>) -> Slurp {
-        let task = BasicTask(observable: taskCreator())
+    public func register<T>(_ name: String, _ dependencies: [String], _ taskCreator: (Slurp) -> Observable<T>) -> Slurp {
+        let task = BasicTask(observable: taskCreator(self))
         tasks[name] = RegisteredTask(name: name, dependencies: dependencies, task: task)
         return self
     }
 
     @discardableResult
-    public func register<T>(_ name: String, _ taskCreator: () -> Observable<T>) -> Slurp {
+    public func register<T>(_ name: String, _ taskCreator: (Slurp) -> Observable<T>) -> Slurp {
         return register(name, [], taskCreator)
     }
 
     public func startWith<S: SlurpTask>(_ task: S) -> Observable<S.OutputType> {
-        print("\n----- Running \(task.name) \n")
         return task.onPipe(from: ())
     }
 
@@ -60,35 +59,25 @@ public class Slurp {
         guard let task = tasks[taskName] else {
             return Observable.error(SlurpError.taskNotFound)
         }
-
-        let dependentTasks = task.dependencies.map { run(taskName: $0) }
-
-        let initialObservable: Observable<Void>
-        if dependentTasks.isNotEmpty {
-            initialObservable = Observable
-                .combineLatest(dependentTasks)
-                .asVoid()
-        } else {
-            initialObservable = Observable.just(())
+        
+        print("\n----- Starting Task: \(task.name) \n")
+        
+        let dependenciesObservable = task.dependencies.reduce(Observable.just(())) { obs, taskName in
+            return obs.flatMap {
+                return self.run(taskName: taskName)
+            }
         }
 
-        return initialObservable
+        return dependenciesObservable
             .flatMap { _ -> Observable<Void> in
                 return task.observable
-            }
-            .map { _ in
-                print("Task \(taskName) completed")
             }
             .asVoid()
     }
 
     public func runAndExit(taskName: String) throws {
-        guard let task = tasks[taskName] else {
-            throw SlurpError.taskNotFound
-        }
-
         var disposeBag: DisposeBag? = DisposeBag()
-        let disposable = task.observable.subscribe({ (event) in
+        let disposable = run(taskName: taskName).subscribe({ (event) in
             switch event {
             case .next:
                 print(taskName + " done")

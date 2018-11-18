@@ -38,7 +38,12 @@ public class SlurpProjectManager {
         
         let projectName = "SlurpTasks"
         
-        let cloneFolder = try Folder(path: "~/Development/personal/Slurp") //Folder(path: "~/.slurp/clone")
+        var slurpFolderPath = "~/.slurp/clone"
+        if let path = ProcessInfo().environment["SLURP_MODULE_PATH"] {
+            slurpFolderPath = path
+        }
+        
+        let cloneFolder = try Folder(path: slurpFolderPath)
         let cloneFolderUrl = URL(string: cloneFolder.path)!
         
         let script = Script(name: projectName, folder: slurpFolder, dependencies: [
@@ -60,26 +65,23 @@ public class SlurpProjectManager {
     }
     
     func run() throws {
-        let slurp = Slurp()
-        try slurp.register("RunTask") {
-            return slurp |> Shell("cd Slurp && swift run")
+        try Slurp().register("RunTask") {
+            return $0 |> Shell("cd Slurp && swift run")
         }
         .runAndExit(taskName: "RunTask")
     }
     
     func openInXcode() throws {
         try generateXcodeProject()
-        let slurp = Slurp()
-        try slurp.register("Edit") {
-                return slurp |> Shell("cd Slurp && open SlurpTasks.xcodeproj")
+        try Slurp().register("Edit") {
+                return $0 |> Shell("cd Slurp && open SlurpTasks.xcodeproj")
             }
             .runAndExit(taskName: "Edit")
     }
     
     private func generateXcodeProject() throws {
-        let slurp = Slurp()
-        try slurp.register("RunTask") {
-                return slurp |> Shell("cd Slurp && swift package generate-xcodeproj")
+        try Slurp().register("RunTask") {
+                return $0 |> Shell("cd Slurp && swift package generate-xcodeproj")
             }
             .runAndExit(taskName: "RunTask")
     }
