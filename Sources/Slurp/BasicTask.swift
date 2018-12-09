@@ -4,22 +4,24 @@ import ShellOut
 import PathKit
 
 public enum SlurpTaskError: Error {
-    case unexpectedInput
     case noFile
     case asyncTaskYieldedNoResultOrError
     case shellProcessExitedWithNonZero(Int32, String?)
+    case unexpectedInput(String)
     case taskDeallocated
     case unspecified
 }
 
 public protocol SlurpTask {
 
+    associatedtype InputType
     associatedtype OutputType
 
     var name: String { get }
     var runMessage: String? { get }
     
-    func onPipe<U>(from input: U) -> Observable<OutputType>
+    func start() -> Observable<OutputType>
+    func onPipe(from input: InputType) -> Observable<OutputType>
 }
 
 extension SlurpTask {
@@ -38,21 +40,24 @@ public class RegisteredTask {
     public init<S: SlurpTask>(name: String, dependencies: [String] = [], task: S) {
         self.name = name
         self.dependencies = dependencies
-        self.observable = task.onPipe(from: ()).asVoid()
+        self.observable = task.start().asVoid()
     }
 }
 
-open class BasicTask<T>: SlurpTask {
+open class BasicTask<I,O>: SlurpTask {
+    
+    public typealias InputType = I
+    public typealias OutputType = O
 
-    public let observable: Observable<T>
+    public let observable: Observable<O>
     public var runMessage: String?
 
-    public init(observable: Observable<T>) {
+    public init(observable: Observable<O>) {
         self.observable = observable
     }
 
-    public init(asyncTask: @escaping ( (Error?, T?) -> Void ) -> Void) {
-        let observable = Observable<T>.create { (observer) -> Disposable in
+    public init(asyncTask: @escaping ( (Error?, O?) -> Void ) -> Void) {
+        let observable = Observable<O>.create { (observer) -> Disposable in
             asyncTask {
                 err, value in
                 if let error = err {
@@ -68,13 +73,17 @@ open class BasicTask<T>: SlurpTask {
         }
         self.observable = observable
     }
+    
+    public func start() -> Observable<O> {
+        return observable
+    }
 
-    public func onPipe<U>(from input: U) -> Observable<T> {
+    public func onPipe(from input: I) -> Observable<O> {
         return observable
     }
 }
 
-public class CWD: BasicTask<Void> {
+public class CWD: BasicTask<Void, Void> {
     public init(_ newDir: String) {
         super.init { callback in
             Slurp.currentWorkingDirectory = newDir

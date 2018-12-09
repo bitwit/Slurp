@@ -2,8 +2,11 @@ import Foundation
 import Slurp
 import RxSwift
 
-public class Version: Shell {
-        
+public class Version: SlurpTask {
+
+    public typealias InputType = String
+    public typealias OutputType = Void
+    
     public enum Action {
         case setMarketingVersion(String?)
         case setBuildNumber(String?)
@@ -12,34 +15,35 @@ public class Version: Shell {
     
     let action: Action
     let all: Bool
+    public let runMessage: String? = nil
     
     public init( _ action: Action, all: Bool = false) {
         self.action = action
         self.all = all
-        super.init(arguments: [])
     }
     
-    public override func onPipe<U>(from input: U) -> Observable<String> {
-        guard let version = input as? String else {
-            return buildVersionCommand(versionString: nil)
-        }
-        let cleanVersionString = version.trimmingCharacters(in: .whitespacesAndNewlines)
+    public func start() -> Observable<Void> {
+        return buildVersionCommand(versionString: nil)
+    }
+    
+    public func onPipe(from input: String) -> Observable<Void> {
+        let cleanVersionString = input.trimmingCharacters(in: .whitespacesAndNewlines)
         return buildVersionCommand(versionString: cleanVersionString)
     }
     
-    private func buildVersionCommand(versionString: String?) -> Observable<String> {
+    private func buildVersionCommand(versionString: String?) -> Observable<Void> {
         
         var arguments = ["agvtool"]
         
         switch action {
         case .setMarketingVersion(let marketingVersion):
             guard let finalVersion = (marketingVersion ?? versionString) else {
-                fatalError("No marketing version provided")
+                return Observable.error(SlurpTaskError.unexpectedInput("No marketing version provided"))
             }
             arguments += ["new-marketing-version", finalVersion]
         case .setBuildNumber(let buildNumber):
             guard let finalVersion = (buildNumber ?? versionString) else {
-                fatalError("No build number provided")
+                return Observable.error(SlurpTaskError.unexpectedInput("No build number provided"))
             }
             arguments += ["new-version"]
             arguments += all ? ["-all"] : []
@@ -49,8 +53,7 @@ public class Version: Shell {
             arguments += all ? ["-all"] : []
         }
         
-        self.arguments = arguments
-        return self.observable
+        return Shell(arguments: arguments).observable.asVoid()
     }
     
 }

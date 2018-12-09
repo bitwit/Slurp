@@ -31,8 +31,9 @@ extension ObservableType {
         return map { _ in () }
     }
     
-    public func pipe<S: SlurpTask>(to: S) -> Observable<S.OutputType> {
+    public func pipe<S: SlurpTask>(to: S) -> Observable<S.OutputType> where S.InputType == E {
         return flatMap({ (element) -> Observable<S.OutputType> in
+            print(E.self, S.InputType.self)
             return to.onPipe(from: element)
         })
     }

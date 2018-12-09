@@ -5,6 +5,8 @@ import PathKit
 
 open class XcodeBuild: SlurpTask {
     
+    public typealias InputType = Void
+    
     public enum SDK: String {
         case ios = "iphoneos"
     }
@@ -65,7 +67,11 @@ open class XcodeBuild: SlurpTask {
         }
     }
     
-    public func onPipe<U>(from input: U) -> Observable<Void> {
+    public func start() -> Observable<Void> {
+        return observable
+    }
+    
+    public func onPipe(from input: Void) -> Observable<Void> {
        return observable
     }
     

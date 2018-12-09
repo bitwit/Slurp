@@ -40,7 +40,7 @@ public class Slurp {
 
     @discardableResult
     public func register<T>(_ name: String, _ dependencies: [String], _ taskCreator: (Slurp) -> Observable<T>) -> Slurp {
-        let task = BasicTask(observable: taskCreator(self))
+        let task = BasicTask<Void, Void>(observable: taskCreator(self).asVoid())
         tasks[name] = RegisteredTask(name: name, dependencies: dependencies, task: task)
         return self
     }
@@ -51,7 +51,7 @@ public class Slurp {
     }
 
     public func startWith<S: SlurpTask>(_ task: S) -> Observable<S.OutputType> {
-        return task.onPipe(from: ())
+        return task.start()
     }
 
     public func run(taskName: String) -> Observable<Void> {
@@ -80,10 +80,11 @@ public class Slurp {
         let disposable = run(taskName: taskName).subscribe({ (event) in
             switch event {
             case .next:
-                print(taskName + " done")
+                print("✅ \(taskName) done")
                 exit(0)
             case .error(let e):
-                print(taskName + " error:", e)
+                print("🚫 \(taskName) failed:")
+                print(e)
                 exit(1)
             default: break
             }
@@ -91,6 +92,13 @@ public class Slurp {
         })
         disposeBag?.insert(disposable)
         RunLoop.main.run()
+    }
+    
+    public func runAndExit<T>(_ taskCreator: (Slurp) -> Observable<T>) throws {
+        let name = "__Slurp_task"
+        let task = BasicTask<Void, Void>(observable: taskCreator(self).asVoid())
+        tasks[name] = RegisteredTask(name: name, dependencies: [], task: task)
+        try runAndExit(taskName: name)
     }
 
 }

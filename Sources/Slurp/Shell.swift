@@ -54,6 +54,7 @@ extension Process: SlurpShellProcess {
 
 open class Shell: SlurpTask {
 
+    public typealias InputType = Void
     public typealias OutputType = String
     
     open var runMessage: String? { return "" }
@@ -72,7 +73,11 @@ open class Shell: SlurpTask {
         self.arguments = arguments
     }
     
-    open func onPipe<U>(from input: U) -> Observable<String> {
+    open func start() -> Observable<String> {
+        return createObservable(arguments: arguments)
+    }
+    
+    open func onPipe(from input: Void) -> Observable<String> {
         return createObservable(arguments: arguments)
     }
     
