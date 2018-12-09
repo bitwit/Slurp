@@ -14,20 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::SlurpXCTools"
-               BuildableName = "SlurpXCTools.framework"
-               BlueprintName = "SlurpXCTools"
-               ReferencedContainer = "container:Slurp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "Slurp::Slurp"
                BuildableName = "Slurp.framework"
                BlueprintName = "Slurp"
@@ -45,6 +31,20 @@
                BlueprintIdentifier = "Slurp::SlurpCLI"
                BuildableName = "SlurpCLI"
                BlueprintName = "SlurpCLI"
+               ReferencedContainer = "container:Slurp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Slurp::SlurpXCTools"
+               BuildableName = "SlurpXCTools.framework"
+               BlueprintName = "SlurpXCTools"
                ReferencedContainer = "container:Slurp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -97,9 +97,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Slurp::SlurpXCTools"
-            BuildableName = "SlurpXCTools.framework"
-            BlueprintName = "SlurpXCTools"
+            BlueprintIdentifier = "Slurp::Slurp"
+            BuildableName = "Slurp.framework"
+            BlueprintName = "Slurp"
             ReferencedContainer = "container:Slurp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

@@ -22,7 +22,7 @@ import MarathonCore
 let slurp = Slurp()
 slurp
     .register("test") {
-        return slurp
+        $0
 //            |> CWD("~/Development/personal/Slurp")
 //            |> Shell(.createFile(named: "testing.cool", contents: "cool"))
 //            |> Shell(.removeFile(from: "testing.cool"))
