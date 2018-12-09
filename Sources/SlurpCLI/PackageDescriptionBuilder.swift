@@ -12,7 +12,7 @@ struct PackageDescriptionBuilder {
     var dependencies: [Dependency]
 
     func generate() -> String{
-        let header = "// swift-tools-version: 4.2\n"
+        let header = "// swift-tools-version:4.2\n"
 
         var description = "\(header)\n\n" +
             "import PackageDescription\n\n" +
@@ -21,12 +21,15 @@ struct PackageDescriptionBuilder {
             "    products: [],\n" +
         "    dependencies: [\n"
         
-        for (index, dependency) in dependencies.enumerated() {
+        let uniqueDependencyUrls = Set(dependencies.map { $0.url })
+        
+        for (index, dependencyUrl) in uniqueDependencyUrls.enumerated() {
             if index > 0 {
                 description += ",\n"
             }
             
-            let dependencyString = ".package(path: \"\(dependency.url.absoluteString)\")"
+            let urlString = dependencyUrl.absoluteString.replacingOccurrences(of: "file://", with: "")
+            let dependencyString = ".package(path: \"\(urlString)\")"
             description.append("        \(dependencyString)")
         }
         

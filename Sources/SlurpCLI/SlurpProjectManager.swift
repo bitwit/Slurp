@@ -41,7 +41,7 @@ public class SlurpProjectManager {
             slurpFolderPath = path
         }
         
-        let cloneFolder = Path(slurpFolderPath)
+        let cloneFolder = Path(slurpFolderPath).absolute()
         let cloneFolderUrl = cloneFolder.url
         
         let script = PackageDescriptionBuilder(name: projectName, folder: slurpFolder, dependencies: [
