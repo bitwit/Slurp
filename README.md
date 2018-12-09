@@ -185,12 +185,9 @@ return slurp
 Some future desires/plans. Requests and contributions very welcome!
 
 - Solidify API
-- Slurp CLI
 - Dry run flag
 - Prettier output
-- Improve Xcode integration flow
 - Make more tasks. Personal wish list:
-	- Swiftlint task
 	- Slack API task
 	- File system tasks
 	- AWS S3 Management
