@@ -1,37 +1,35 @@
 import Foundation
-import MarathonCore
-import Files
+import PathKit
 import Slurp
+
+enum SlurpCLIError: Error {
+    case cantCreateDirectory
+    case cantCreateFile
+}
+
+extension Path {
+    func createSubfolderIfNeeded(named name: String) throws -> Path {
+        let path = self + Path(name)
+        if path.isFile {
+            throw SlurpCLIError.cantCreateDirectory
+        } else if !path.exists {
+            try path.mkdir()
+        }
+        return path
+    }
+}
 
 public class SlurpProjectManager {
     
-    let rootFolder: Folder
-    let slurpFolder: Folder
+    let rootFolder: Path
+    let slurpFolder: Path
     
-    let packageInfoFolder: Folder
-    let packageManager: PackageManager
-    
-    let printer: Printer
-    
+    let verbose: Bool
+
     public init(verbose: Bool) throws {
-        
-        printer = Printer(outputFunction: { print($0) },
-                          progressFunction: { (message: () -> String) in if verbose { print(message()) } },
-                          verboseFunction: { (message: () -> String) in if verbose { print(message()) } })
-        
-        rootFolder = try Folder(path: FileManager.default.currentDirectoryPath)
-        slurpFolder = try rootFolder.createSubfolderIfNeeded(withName: "Slurp")
-        
-        packageInfoFolder = try slurpFolder.createSubfolderIfNeeded(withName: "Packages")
-        packageManager = try PackageManager(folder: packageInfoFolder, printer: printer)
-    }
-    
-    deinit {
-        do {
-            try packageInfoFolder.delete()
-        } catch {
-            print("Warning: Couldn't delete packages folder".consoleText(color: .red))
-        }
+        self.rootFolder = Path(FileManager.default.currentDirectoryPath)
+        self.slurpFolder = try rootFolder.createSubfolderIfNeeded(named: "Slurp")
+        self.verbose = verbose
     }
     
     func generate() throws {
@@ -43,23 +41,21 @@ public class SlurpProjectManager {
             slurpFolderPath = path
         }
         
-        let cloneFolder = try Folder(path: slurpFolderPath)
-        let cloneFolderUrl = URL(string: cloneFolder.path)!
+        let cloneFolder = Path(slurpFolderPath)
+        let cloneFolderUrl = cloneFolder.url
         
-        let script = Script(name: projectName, folder: slurpFolder, dependencies: [
+        let script = PackageDescriptionBuilder(name: projectName, folder: slurpFolder, dependencies: [
             Dependency(name: "Slurp", url: cloneFolderUrl),
             Dependency(name: "SlurpXCTools", url: cloneFolderUrl)
-        ], printer: printer)
+        ])
         
-        script.dependencies = try packageManager.addPackagesIfNeeded(from: script.dependencies)
+        let packageFile = slurpFolder + Path("Package.swift")
+        try packageFile.write(script.generate())
         
-        let packageFile = try slurpFolder.createFile(named: "Package.swift")
-        try packageFile.write(string: packageManager.makePackageDescription(for: script))
-        
-        let sourcesFolder = try slurpFolder.createSubfolderIfNeeded(withName: "Sources")
-        let slurpTasksFolder = try sourcesFolder.createSubfolderIfNeeded(withName: projectName)
-        let file = try slurpTasksFolder.createFileIfNeeded(withName: "main.swift")
-        try file.write(string: "import Foundation\n\n print(\"Hello World!\")")
+        let sourcesFolder = try slurpFolder.createSubfolderIfNeeded(named: "Sources")
+        let slurpTasksFolder = try sourcesFolder.createSubfolderIfNeeded(named: projectName)
+        let mainFile = slurpTasksFolder + Path("main.swift")
+        try mainFile.write("import Foundation\n\n print(\"Hello World!\")")
         
         try generateXcodeProject()
     }

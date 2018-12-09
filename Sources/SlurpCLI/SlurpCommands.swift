@@ -1,7 +1,5 @@
 import Foundation
 import Guaka
-import MarathonCore
-import ShellOut
 import Slurp
 
 struct SlurpCommands {
@@ -65,9 +63,6 @@ struct SlurpCommands {
             let projMgr = try SlurpProjectManager(verbose: flags.getBool(name: "verbose") ?? false)
             try projMgr.generate()
         } catch {
-            if let e = error as? PackageManagerError {
-                print((e.message + e.hints.joined(separator: "\n")).consoleText(color: .red))
-            }
             print("Error".consoleText(color: .red))
             print(error.localizedDescription.consoleText(color: .red))
         }

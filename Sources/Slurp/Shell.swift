@@ -1,6 +1,5 @@
 import Foundation
 import RxSwift
-import ShellOut
 import PathKit
 
 public protocol SlurpShellProcess: class {
@@ -128,12 +127,6 @@ open class Shell: SlurpTask {
             process.launch()
             return Disposables.create()
         })
-    }
-
-    //Shell out support
-    
-    public convenience init(_ shellOutCommand: ShellOutCommand) {
-        self.init(arguments: [shellOutCommand.string])
     }
 
 }

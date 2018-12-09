@@ -1,6 +1,5 @@
 import Foundation
 import RxSwift
-import ShellOut
 import PathKit
 
 public enum SlurpTaskError: Error {

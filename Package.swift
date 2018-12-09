@@ -12,7 +12,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/ReactiveX/RxSwift.git", .exact(.init(4, 1, 2))),
         .package(url: "https://github.com/kylef/PathKit.git", .exact(.init(0, 9, 0))),
-        .package(url: "https://github.com/bitwit/Marathon.git", .branch("slurp-0.1.0")),
         .package(url: "https://github.com/nsomar/Guaka.git", .exact(.init(0, 1, 3))),
 
         // Testing
@@ -22,10 +21,10 @@ let package = Package(
     targets: [
         .target(
             name: "SlurpCLI",
-            dependencies: ["MarathonCore", "Guaka", "Slurp"]),
+            dependencies: ["Guaka", "Slurp"]),
         .target(
             name: "Slurp",
-            dependencies: ["RxSwift", "PathKit", "MarathonCore"]),
+            dependencies: ["RxSwift", "PathKit"]),
         .target(
             name: "SlurpXCTools",
             dependencies: ["Slurp", "RxSwift", "PathKit"]),

@@ -14,20 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::Slurp"
-               BuildableName = "Slurp.framework"
-               BlueprintName = "Slurp"
-               ReferencedContainer = "container:Slurp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "Slurp::SlurpCLI"
                BuildableName = "SlurpCLI"
                BlueprintName = "SlurpCLI"
@@ -42,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::SlurpXCTools"
-               BuildableName = "SlurpXCTools.framework"
-               BlueprintName = "SlurpXCTools"
+               BlueprintIdentifier = "Slurp::ExampleSlurpTasks"
+               BuildableName = "ExampleSlurpTasks"
+               BlueprintName = "ExampleSlurpTasks"
                ReferencedContainer = "container:Slurp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -56,9 +42,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Slurp::ExampleSlurpTasks"
-               BuildableName = "ExampleSlurpTasks"
-               BlueprintName = "ExampleSlurpTasks"
+               BlueprintIdentifier = "Slurp::Slurp"
+               BuildableName = "Slurp.framework"
+               BlueprintName = "Slurp"
+               ReferencedContainer = "container:Slurp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Slurp::SlurpXCTools"
+               BuildableName = "SlurpXCTools.framework"
+               BlueprintName = "SlurpXCTools"
                ReferencedContainer = "container:Slurp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -97,9 +97,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Slurp::Slurp"
-            BuildableName = "Slurp.framework"
-            BlueprintName = "Slurp"
+            BlueprintIdentifier = "Slurp::SlurpCLI"
+            BuildableName = "SlurpCLI"
+            BlueprintName = "SlurpCLI"
             ReferencedContainer = "container:Slurp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
